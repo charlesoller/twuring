@@ -1,15 +1,16 @@
-// Functions
-import { emptyTwur, formatDate } from "../utils/helper";
+"use client"
+
+// // Functions
+// import { emptyTwur, formatDate } from "../utils/helper";
 import { useState, useEffect } from "react";
 
-// Components
-import { InteractionButton } from "./InteractionButton"
-import { GrLike, GrDislike, GrChat } from "react-icons/gr";
-import { getTwur } from "../backend/api";
-import { Link } from "react-router-dom";
+// // Components
+// import { InteractionButton } from "./InteractionButton"
+// import { GrLike, GrDislike, GrChat } from "react-icons/gr";
+// import { getTwur } from "../backend/api";
 
-// Types
-import { TwurInterface, ImagePost } from "../utils/types";
+// // Types
+import { TwurInterface, ImagePost } from "../_lib/types";
 
 
 
