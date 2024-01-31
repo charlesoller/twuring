@@ -1,9 +1,7 @@
-"use client"
-
 // Functions
-import { useState, useEffect } from "react";
-// import { getTwur } from "../backend/api";
 import { emptyTwur, formatDate } from "../_lib/helper";
+import { getTwur } from "../_lib/fetch/get";
+
 
 // // Components
 import { GrLike, GrDislike, GrChat } from "react-icons/gr";
@@ -15,18 +13,19 @@ import { TwurInterface, TextPost } from "../_lib/types";
 // import { Link } from "react-router-dom";
 
 
-export function TextPost({ text, userId, likes, dislikes, comments, createdAt }: TextPost ){
+export async function TextPost({ body, twur_id, likes, dislikes, comments, createdAt }: TextPost ){
 
-    const [ twur, setTwur ] = useState<TwurInterface>(emptyTwur)
+    // const [ twur, setTwur ] = useState<TwurInterface>(emptyTwur)
 
-    useEffect(() => {
-        const loadTwur = async(userId: string) => {
-            const res = await getTwur(userId)
-            setTwur(res)
-        }
+    // useEffect(() => {
+    //     const loadTwur = async(userId: string) => {
+    //         const res = await getTwur(userId)
+    //         setTwur(res)
+    //     }
 
-        loadTwur(userId)
-    }, [])
+    //     loadTwur(userId)
+    // }, [])
+    const twur = await getTwur(twur_id)
 
     return (
         <Card className="flex flex-row px-6 pt-6 pb-3 gap-3 transition duration-200">
@@ -35,20 +34,20 @@ export function TextPost({ text, userId, likes, dislikes, comments, createdAt }:
             <div className="w-full">
                 <div className="flex items-center gap-3 mb-2">
                         <User
-                        name="Junior Garcia"
+                        name={twur.name}
                         description={(
-                            <Link href={`twurs/${userId}`} size="sm" isExternal>
-                                @jrgarciadev
+                            <Link href={`twurs/${twur_id}`} size="sm" isExternal>
+                                @{twur.user_name}
                             </Link>
                         )}
                         avatarProps={{
-                            src: "https://avatars.githubusercontent.com/u/30373425?v=4"
+                            src: twur.profile_pic
                         }}
                     />
                     <p className="m-0 p-0 h-fit text-sm ml-auto mb-auto">{formatDate(createdAt)}</p>
                 </div>
 
-                <p className="text-sm leading-6 mb-4">{ text }</p>
+                <p className="text-sm leading-6 mb-4">{ body }</p>
                 <div className="flex">
                     <Button variant="light">
                         <GrLike />
