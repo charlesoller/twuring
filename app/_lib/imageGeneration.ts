@@ -1,6 +1,6 @@
 // Functions
 import { uploadFile } from "./helper"
-import { updateTwurProfilePicture } from "../backend/api"
+// import { updateTwurProfilePicture } from "../backend/api"
 import { createProfilePicFileFromBlob, blobToUrl } from "./helper"
 
 // Clients

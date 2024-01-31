@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
     const supabase = createSupabaseRouteHandlerClient()
 
     const { data, error } = await supabase
-        .from("twurs")
+        .from("Twurs")
         .select()
     if(error){
         throw new Error(error.message)

@@ -2,10 +2,11 @@ import { exampleDialogue } from "./exampleDialogue";
 import { guidelines } from "./guidelines";
 import { toolsAvailable } from "./tools";
 
-export const createInstructions = (description: string) => {
+export const createInstructions = (backstory: string) => {
 const instructions =
 `<s>[INST] <<SYS>>
-${description}
+This is your backstory:
+${backstory}
 ${guidelines}
 
 ${toolsAvailable}

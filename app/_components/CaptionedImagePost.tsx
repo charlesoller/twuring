@@ -1,69 +1,61 @@
 // Functions
-import { useState, useEffect } from "react"
-import { getTwur } from "../backend/api"
-import { emptyTwur, formatDate } from "../utils/helper";
+import { getTwur } from "../_lib/fetch/get";
+import { formatDate } from "../_lib/helper";
 
 // Components
-import { InteractionButton } from "./InteractionButton"
-import { Link } from "react-router-dom";
+import { Card, Button, User, Link, Image } from "@nextui-org/react";
 
 // Types
-import { TwurInterface, CaptionedImagePost } from "../utils/types"
+import { CaptionedImagePost } from "../_lib/types";
 import { GrLike, GrDislike, GrChat } from "react-icons/gr";
 
 // ----------------------------------------------- //
 
-export function CaptionedImagePost({ url, text, userId, likes, dislikes, comments, createdAt }: CaptionedImagePost ){
+export async function CaptionedImagePost({ img_url, img_prompt, body, twur_id, likes, dislikes, comments, created_at }: CaptionedImagePost ){
 
-    const [ twur, setTwur ] = useState<TwurInterface>(emptyTwur)
-
-    useEffect(() => {
-        const loadTwur = async(userId: string) => {
-            const res = await getTwur(userId)
-            setTwur(res)
-        }
-
-        loadTwur(userId)
-    }, [])
+    const twur = await getTwur(twur_id)
 
     return (
-        <div className="flex w-full px-4 py-5 gap-3 hover:bg-blue-200/5 rounded-xl transition duration-200">
-            <Link to={`twurs/${userId}`} className="shrink-0 h-fit">
-                <div className="flex gap-4 shrink-0">
-                    <img className="h-8 w-8 rounded-full"
-                    src={twur.profile_pic} />
-                </div>
-            </Link>
-
-            <div>
-                <div className="flex items-center gap-3">
-                    <div className="flex flex-col gap-0">
-                        <p className="text-white/90 font-semibold m-0 p-0 h-fit text-sm">{twur.name}</p>
-                        <p className="text-white/50 m-0 p-0 h-fit text-sm">@{twur.user_name}</p>
-                    </div>
-
-                    <p className="text-white/50 m-0 p-0 h-fit text-sm ml-auto mb-auto">{formatDate(createdAt)}</p>
-
+        <Card className="flex flex-row px-6 pt-6 pb-3 gap-3 transition duration-200">
+            <div className="w-full">
+                <div className="flex items-center gap-3 mb-2">
+                    <User
+                        name={twur.name}
+                        description={(
+                            <Link href={`twurs/${twur_id}`} size="sm" isExternal>
+                                @{twur.user_name}
+                            </Link>
+                        )}
+                        avatarProps={{
+                            src: twur.profile_pic
+                        }}
+                    />
+                    <p className="m-0 p-0 h-fit text-sm ml-auto mb-auto">{formatDate(created_at)}</p>
                 </div>
 
-                <img className="rounded-xl max-h-96 my-6"
-                    src={url}
+                <Image
+                    src={img_url}
+                    alt={img_prompt}
+                    className="mb-4"
                 />
 
-                <p className="text-white/90 text-sm leading-6 mb-4 ml-0">{ text }</p>
+                <p className="text-sm leading-6 mb-4">{ body }</p>
 
-                <div className="flex gap-4">
-                        <InteractionButton icon={<GrLike />}>
-                            { likes }
-                        </InteractionButton>
-                        <InteractionButton icon={<GrDislike />}>
-                            { dislikes }
-                        </InteractionButton>
-                        <InteractionButton icon={<GrChat />}>
-                            { comments.length }
-                        </InteractionButton>
+                <div className="flex">
+                    <Button variant="light">
+                        <GrLike />
+                        {likes}
+                    </Button>
+                    <Button variant="light">
+                        <GrDislike />
+                        {dislikes}
+                    </Button>
+                    <Button variant="light">
+                        <GrChat />
+                        {comments.length}
+                    </Button>
                 </div>
             </div>
-        </div>
+        </Card>
     )
 }

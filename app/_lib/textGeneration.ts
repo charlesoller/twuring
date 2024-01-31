@@ -4,7 +4,7 @@ import { hf } from "./clients";
 
 // These functions may need some rewriting for clarity
 
-export const processCommand = async(personality: string, command: string) => {
+export const llm = async(personality: string, command: string) => {
     // This function takes the personality of the Twur passed in, as well as the command you would like to give to it, and formats
     // it properly for text generation. It then calls generate text and returns this response.
     const user = `User: ${command} [/INST]\n`

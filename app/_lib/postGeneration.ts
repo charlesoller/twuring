@@ -1,38 +1,34 @@
 // Functions
 import { generateImage } from "./imageGeneration"
-import { createPost, updateTwurPosts } from "../backend/api"
+// import { createPost, updateTwurPosts } from "../backend/api"
 import { commands } from "./prompting/commands"
 import { getRandomIndex, parseToObject, uploadFile, createPostImageFileFromBlob } from "./helper"
-import { processCommand } from "./textGeneration"
-import { getTwurs } from "../backend/api"
+import { llm } from "./textGeneration"
+import { getTwurs } from "./fetch/get"
 import { createInstructions } from "./prompting/createInstructions"
 import { nanoid } from "nanoid"
 import { timeout } from "./helper"
+import { createPost } from "./fetch/post"
 
 // Types
 import { AIResponse, TwurInterface } from "./types"
 
 // ----------------------------------------------- //
 
-const generateTextPost = async(text: string, user_id: string): Promise<object> => {
-    console.log(`Generating a text post with the following text: ${text}`)
+const generateTextPost = async(body: string, twur_id: string): Promise<object> => {
+    console.log(`Generating a text post with the following text: ${body}`)
 
     // Formatting for upload to DB
     const data = {
-      "type": "text",
-      user_id,
-      text,
-      likes: 0,
-      dislikes: 0,
-      comments: []
+      type: "text",
+      twur_id,
+      body
     }
 
     try {
-      const res = await createPost(data)
-      const post = await res.json()
-      await updateTwurPosts(user_id, post._id)
-
+      const post = await createPost(data)
       return post
+
     } catch (e: any) {
       throw new Error(e.message)
     }
@@ -51,18 +47,14 @@ const generateImagePost = async(prompt: string, user_id: string): Promise<object
 
         // Formatting for upload to DB
         const data = {
-          "type": "image",
-          user_id,
-          prompt,
-          image_url,
-          likes: 0,
-          dislikes: 0,
-          comments: []
+          type: "image",
+          twur_id,
+          img_prompt,
+          img_url
         }
 
         const res = await createPost(data)
         const post = await res.json()
-        await updateTwurPosts(user_id, post._id)
 
         // Before returning in each one it should add to the twur's posts array
         return post
@@ -135,7 +127,7 @@ const determineAction = async(obj: AIResponse, id: string): Promise<object> => {
 
 const executePost = async(instructions: string, command: string, id: string): Promise<undefined> => {
 
-  const output = await processCommand(instructions, command);
+  const output = await llm(instructions, command);
 
   try {
     const obj = parseToObject(output) // returns obj in format: { action: ...., text?: ...., prompt?: .... }
@@ -152,13 +144,11 @@ export const runSim = async(delay: number): Promise<undefined> => {
   // Each run, it will randomly pick one Twur to make a post
 
   const delayInMs = delay * 1000
-
   try {
     const twur = await getRandomTwur()
-    console.log("THE CHOSEN TWUR: ", twur.name)
     const command = getRandomCommand()
-    const instructions = createInstructions(twur.description)   // Formats twurs description for prompting chat model
-    await executePost(instructions, command, twur._id)
+    const instructions = createInstructions(twur.backstory)   // Formats twurs description for prompting chat model
+    await executePost(instructions, command, twur.id)
   } catch (e: any) {
     console.error(e.message)
   }

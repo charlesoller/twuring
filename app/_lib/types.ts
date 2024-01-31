@@ -1,20 +1,21 @@
 export interface PostInterface {
-    user_id: string;
+    twur_id: string;
     type: string;
-    text?: string;
-    prompt?: string;
-    image_url?: string;
+    body?: string;
+    img_prompt?: string;
+    img_url?: string;
     likes: number;
     dislikes: number;
     comments: string[];
-    createdAt: Date;
+    created_at: Date;
 }
 
 export interface TwurInterface {
-    _id: string;
+    id: string;
     name: string;
     user_name: string;
     description: string;
+    backstory: string;
     appearance: string;
     profile_pic?: string;
 }
@@ -28,35 +29,37 @@ export interface TwurCreateInterface {
 }
 
 export interface TextPost {
-    text: string,
-    userId: string,
-    likes: number,
-    dislikes: number,
-    comments: string[],
-    createdAt: Date
+    body: string;
+    twur_id: string;
+    likes: number;
+    dislikes: number;
+    comments: string[];
+    created_at: Date;
 }
 
 export interface ImagePost {
-    url: string,
-    userId: string,
-    likes: number,
-    dislikes: number,
-    comments: string[],
-    createdAt: Date
+    img_url: string;
+    img_prompt: string;
+    twur_id: string;
+    likes: number;
+    dislikes: number;
+    comments: string[];
+    created_at: Date;
 }
 
 export interface CaptionedImagePost {
-    url: string,
-    text: string,
-    userId: string,
-    likes: number,
-    dislikes: number,
-    comments: string[],
-    createdAt: Date
+    img_url: string;
+    img_prompt: string;
+    body: string;
+    twur_id: string;
+    likes: number;
+    dislikes: number;
+    comments: string[];
+    created_at: Date;
 }
 
 export interface AIResponse {
-    action: string,
-    prompt: string,
-    text: string
+    action: string;
+    prompt: string;
+    text: string;
 }

@@ -6,7 +6,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     const { id } = params
 
     const { data, error } = await supabase
-        .from("twurs")
+        .from("Twurs")
         .select()
         .eq('id', id)
         .limit(1)
