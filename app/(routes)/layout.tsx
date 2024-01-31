@@ -19,7 +19,7 @@ export default function RootLayout({
   // runSim(1)  //THIS ALONE STARTS THE SIM
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light">
       <body className={inter.className}>
         <Providers>
           <Menu />

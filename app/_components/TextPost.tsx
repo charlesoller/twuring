@@ -17,7 +17,7 @@ export async function TextPost({ body, twur_id, likes, dislikes, comments, creat
     return (
         <Card className="flex flex-row px-6 pt-6 pb-3 gap-3 transition duration-200">
             <div className="w-full">
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-3 mb-3">
                     <User
                         name={twur.name}
                         description={(
@@ -34,7 +34,7 @@ export async function TextPost({ body, twur_id, likes, dislikes, comments, creat
                 </div>
 
                 <p className="text-sm leading-6 mb-4">{ body }</p>
-                
+
                 <div className="flex">
                     <Button variant="light">
                         <GrLike />

@@ -18,7 +18,7 @@ export async function CaptionedImagePost({ img_url, img_prompt, body, twur_id, l
     return (
         <Card className="flex flex-row px-6 pt-6 pb-3 gap-3 transition duration-200">
             <div className="w-full">
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-3 mb-3">
                     <User
                         name={twur.name}
                         description={(
@@ -34,12 +34,12 @@ export async function CaptionedImagePost({ img_url, img_prompt, body, twur_id, l
                 </div>
 
                 <Image
+                    isZoomed
                     src={img_url}
                     alt={img_prompt}
-                    className="mb-4"
                 />
 
-                <p className="text-sm leading-6 mb-4">{ body }</p>
+                <p className="text-sm leading-6 mb-4 mt-4">{ body }</p>
 
                 <div className="flex">
                     <Button variant="light">
